@@ -18,6 +18,7 @@ class User(db.Model):
                       nullable=False)
     first_name = db.Column(db.String(length=30), nullable=False)
     last_name = db.Column(db.String(length=30), nullable=False)
+    posts = db.relationship('Post', backref="user")
 
     def __repr__(self):
         u = self
@@ -41,3 +42,14 @@ class User(db.Model):
             return u
         else:
             return False
+    
+class Post(db.Model):
+    __tablename__ = "posts"
+
+    id = db.Column(db.Integer, primary_key=True, 
+                   autoincrement=True, nullable=False)
+    title = db.Column(db.String(length=100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    username = db.Column(db.String, db.ForeignKey('users.username',
+                                       ondelete='CASCADE'))
+    

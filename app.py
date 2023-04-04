@@ -155,3 +155,16 @@ def submit_update_post(id):
         user = User.query.get_or_404(session['username'])
         flash(f"You do not have access to this page!")
         return redirect (f'/users/{user.username}')
+
+@app.route('/post/<int:id>/delete')
+def delete_post(id):
+    post = Post.query.get_or_404(id)
+    if session['username'] == post.username:
+        db.session.delete(post)
+        db.session.commit()
+        flash(f"Post deleted!")
+        return redirect (f'/users/{post.username}')
+    else:
+        user = User.query.get_or_404(session['username'])
+        flash(f"You do not have access to this page!")
+        return redirect (f'/users/{user.username}')

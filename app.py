@@ -36,7 +36,8 @@ def register():
         db.session.add(user)
         try:
             db.session.commit()
-            return redirect('/secret')
+            session['username'] = username
+            return redirect(f'/users/{username}')
         except IntegrityError:
             db.session.rollback()
             form.username.errors.append('Username taken.')
@@ -101,7 +102,7 @@ def delete_user(username):
             return redirect(f'/users/{user.username}')
 
 @app.route('/users/<username>/post/add', methods=['GET'])
-def post_form(username):
+def new_post_form(username):
     form = PostForm()
     if 'username' not in session:
         flash('You must log in to edit an account!')
@@ -116,7 +117,7 @@ def post_form(username):
             return redirect(f'/users/{user.username}')
 
 @app.route('/users/<username>/post/add', methods=['POST'])
-def submit_post(username):
+def submit_new_post(username):
     form = PostForm()
     if form.validate_on_submit():
         title = form.title.data
@@ -132,8 +133,8 @@ def submit_post(username):
             flash(f"Error occurred, please try again!")
             return redirect (f'/users/{username}')
 
-@app.route('/post/<int:id>/update')
-def update_post(id):
+@app.route('/post/<int:id>/update', methods=['GET'])
+def update_post_form(id):
     post = Post.query.get_or_404(id)
     if session['username'] == post.username:
         return render_template('update_post.html', post=post)
@@ -141,3 +142,16 @@ def update_post(id):
         user = User.query.get_or_404(session['username'])
         flash(f"You do not have access to this page!")
         return redirect (f'/users/{user}')
+    
+@app.route('/post/<int:id>/update', methods=['POST'])
+def submit_update_post(id):
+    post = Post.query.get_or_404(id)
+    if session['username'] == post.username:
+        post.title = request.form['title'] or post.title
+        post.content = request.form['content'] or post.content
+        db.session.commit()
+        return redirect (f'/users/{post.user.username}')
+    else:
+        user = User.query.get_or_404(session['username'])
+        flash(f"You do not have access to this page!")
+        return redirect (f'/users/{user.username}')

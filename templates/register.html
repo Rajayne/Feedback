@@ -2,7 +2,9 @@
 
 {% block title %}Register Form{% endblock %}
 
-{% block navbar %}{% endblock %}
+{% block navbar %}
+<a href="/login">Login</a>
+{% endblock %}
 
 {% block header %}Register User{% endblock %}
 
@@ -23,9 +25,8 @@
             {% endfor %}
         </div>
         {% endfor %}
-        <a href="/" class="btn btn-secondary">Back</a>
+        <a href="/login" class="btn btn-secondary">Login</a>
         <button class="btn btn-primary">Submit</button>
     </form>
 </div>
-
 {% endblock %}

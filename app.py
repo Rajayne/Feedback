@@ -67,8 +67,13 @@ def user_page(username):
         flash('You must be logged in to view!')
         return redirect('/login')
     else:
-        user = User.query.get_or_404(username)    
-        return render_template('users.html', user=user)
+        if session['username'] == username:
+            user = User.query.get_or_404(username)    
+            return render_template('users.html', user=user)
+        else:
+            user = User.query.get_or_404(session['username'])
+            flash(f"You do not have access to this page!")
+            return redirect(f'/users/{user.username}')
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():

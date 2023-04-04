@@ -37,7 +37,7 @@ class User(db.Model):
         """Validate user exists and password is correct"""
 
         u = User.query.filter_by(username=username).first()
-        if u and bcrypt.check_password_has(u.password, password):
+        if u and bcrypt.check_password_hash(u.password, password):
             return u
         else:
             return False

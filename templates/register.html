@@ -2,27 +2,30 @@
 
 {% block title %}Register Form{% endblock %}
 
-{{% block navbar %}}{{% endblock %}}
+{% block navbar %}{% endblock %}
 
-{% block header %}Register User{{user.name}}{% endblock %}
+{% block header %}Register User{% endblock %}
 
 {% block content %}
-<form method="POST">
-    {{ form.hidden_tag() }}
-    {% for field in form
-        if field.widget.input_type != 'hidden' %}
-    <div class="form-group">
-        {{field.label}} 
-        {{field(class_="form-control")}}
-    
-        {% for err in field.errors %}
-        <small class="form-text text-danger">
-            {{err}}
-        </small>
+<div class="container">
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {% for field in form
+            if field.widget.input_type != 'hidden' %}
+        <div class="form-group">
+            {{field.label}} 
+            {{field(class_="form-control")}}
+        
+            {% for err in field.errors %}
+            <small class="form-text text-danger">
+                {{err}}
+            </small>
+            {% endfor %}
+        </div>
         {% endfor %}
-    </div>
-    {% endfor %}
-    <a href="/" class="btn btn-secondary">Back</a>
-    <button class="btn btn-primary">Submit</button>
-</form>
+        <a href="/" class="btn btn-secondary">Back</a>
+        <button class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
 {% endblock %}

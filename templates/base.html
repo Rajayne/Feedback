@@ -7,13 +7,19 @@
     <link rel="stylesheet" href="/static/app.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>{{% block title %}}{{% endblock %}}</title>
+    <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-    <nav>{{% block navbar %}}{{% endblock %}}</nav>
-    <h1>{{% block header %}}{{% endblock %}}</h1>
+    <nav>{% block navbar %}{% endblock %}</nav>
+    <h1 class="display-4 text-center">{% block header %}{% endblock %}</h1>
 
-    {{% block content %}}{{% endblock %}}
+    {% for msg in get_flashed_messages() %}
+    <div class="alert alert-warning" role="alert">
+        <p class="message">{{msg}}</p>
+    </div>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
     
 </body>
 </html>

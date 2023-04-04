@@ -1,24 +1,30 @@
+{% extends 'base.html' %}
+
 {% block title %}Login Form{% endblock %}
 
-{{% block navbar %}}{{% endblock %}}
+{% block navbar %}{% endblock %}
 
 {% block header %}Login{% endblock %}
-<form method="POST">
-    {{ form.hidden_tag() }}
-    {% for field in form
-        if field.widget.input_type != 'hidden' %}
-    <div class="form-group">
-        {{field.label}} 
-        {{field(class_="form-control")}}
-    
-        {% for err in field.errors %}
-        <small class="form-text text-danger">
-            {{err}}
-        </small>
-        {% endfor %}
-    </div>
-    {% endfor %}
-    <a href="/" class="back-button">Back</a>
-    <button class="add-button">Submit</button>
-</form>
+
 {% block content %}
+<div class="container">
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {% for field in form
+            if field.widget.input_type != 'hidden' %}
+        <div class="form-group">
+            {{field.label}} 
+            {{field(class_="form-control")}}
+        
+            {% for err in field.errors %}
+            <small class="form-text text-danger">
+                {{err}}
+            </small>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        <a href="/" class="btn btn-secondary">Back</a>
+        <button class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}

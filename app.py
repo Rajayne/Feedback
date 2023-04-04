@@ -19,7 +19,7 @@ connect_db(app)
 db.create_all()
 
 @app.route('/', methods=['GET'])
-def redirect():
+def home():
     return redirect('/register')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -36,13 +36,13 @@ def register():
         db.session.add(user)
         try:
             db.session.commit()
+            return redirect('/secret')
         except IntegrityError:
             db.session.rollback()
             form.username.errors.append('Username taken.')
-
+            return render_template('register.html', form=form)
     else:
         return render_template('register.html', form=form)
-    
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -55,7 +55,7 @@ def login():
 
         if user:
             flash(f'Welcome back, {user.username}!')
-            session['user_id'] = user.user_id
+            session['username'] = user.username
             return redirect('/secret')
         else: form.username.errors = ['Invalid username/password']
 
@@ -63,4 +63,14 @@ def login():
 
 @app.route('/secret', methods=['GET'])
 def secret_page():
-    return f'You made it!'
+    if 'username' not in session:
+        flash('You must be logged in to view!')
+        return redirect('/')
+    else:
+        return f'You made it!'
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    session.pop('username')
+    flash('Goodbye!')
+    return redirect('/')

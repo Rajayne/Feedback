@@ -56,21 +56,22 @@ def login():
         if user:
             flash(f'Welcome back, {user.username}!')
             session['username'] = user.username
-            return redirect('/secret')
+            return redirect(f'/users/{user.username}')
         else: form.username.errors = ['Invalid username/password']
 
     return render_template('login.html', form=form)
 
-@app.route('/secret', methods=['GET'])
-def secret_page():
+@app.route('/users/<username>', methods=['GET'])
+def user_page(username):
     if 'username' not in session:
         flash('You must be logged in to view!')
-        return redirect('/')
+        return redirect('/login')
     else:
-        return f'You made it!'
+        user = User.query.get_or_404(username)    
+        return render_template('users.html', user=user)
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session.pop('username')
     flash('Goodbye!')
-    return redirect('/')
+    return redirect('/login')

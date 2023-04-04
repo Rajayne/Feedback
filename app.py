@@ -18,6 +18,10 @@ debug = DebugToolbarExtension(app)
 connect_db(app)
 db.create_all()
 
+@app.errorhandler(404)
+def show_error_page(e):
+    return render_template('error.html'), 404
+
 @app.route('/', methods=['GET'])
 def home():
     return redirect('/register')

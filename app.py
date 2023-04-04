@@ -92,6 +92,7 @@ def delete_user(username):
             user = User.query.get_or_404(username)
             db.session.delete(user)
             db.session.commit()
+            session.pop('username')
             flash(f"Account successfully deleted!")
             return redirect ('/')
         else:

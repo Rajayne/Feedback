@@ -5,4 +5,8 @@
 {% block header %}{{user.username}}'s Page{% endblock %}
 
 {% block content %}
+    {% for post in posts %}
+        {{post.title}}
+        {{post.content}}
+    {% endfor %}
 {% endblock %}

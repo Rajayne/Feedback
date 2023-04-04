@@ -68,8 +68,9 @@ def user_page(username):
         return redirect('/login')
     else:
         if session['username'] == username:
-            user = User.query.get_or_404(username)    
-            return render_template('users.html', user=user)
+            user = User.query.get_or_404(username)
+            posts = user.posts   
+            return render_template('users.html', user=user, posts=posts)
         else:
             user = User.query.get_or_404(session['username'])
             flash(f"You do not have access to this page!")

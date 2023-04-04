@@ -75,6 +75,23 @@ def user_page(username):
             user = User.query.get_or_404(session['username'])
             flash(f"You do not have access to this page!")
             return redirect(f'/users/{user.username}')
+        
+@app.route('/users/<username>/delete')
+def delete_user(username):
+    if 'username' not in session:
+        flash('You must log in to edit an account!')
+        return redirect('/login')
+    else:
+        if session['username'] == username:
+            user = User.query.get_or_404(username)
+            db.session.delete(user)
+            db.session.commit()
+            flash(f"Account successfully deleted!")
+            return redirect ('/')
+        else:
+            user = User.query.get_or_404(session['username'])
+            flash(f"You do not have access to this page!")
+            return redirect(f'/users/{user.username}')
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():

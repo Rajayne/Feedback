@@ -6,3 +6,10 @@ nav a {
     text-align: center;
     height: 3rem;
 }
+
+.card {
+    margin: 2rem;
+    width: 18rem;
+    text-align: center;
+    display: inline-block;
+}

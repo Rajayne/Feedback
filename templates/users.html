@@ -2,11 +2,21 @@
 
 {% block title %}User Page{% endblock %}
 
-{% block header %}{{user.username}}'s Page{% endblock %}
+{% block header %}
+    {{user.username}}'s Page
+    <br>
+    <a href="/users/{{user.username}}/delete" class="btn btn-danger">Delete User</a>
+{% endblock %}
 
 {% block content %}
     {% for post in posts %}
-        {{post.title}}
-        {{post.content}}
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">{{post.title}}</h4>
+                <p class="card-text">{{post.content}}</p>
+                <a href='post/{{post.id}}/edit' class="card-link">Edit</a>
+                <a href='post/{{post.id}}/delete' class="card-link">Delete</a>
+            </div>
+        </div>
     {% endfor %}
 {% endblock %}

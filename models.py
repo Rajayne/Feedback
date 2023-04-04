@@ -11,13 +11,13 @@ def connect_db(app):
 class User(db.Model):
     __tablename__ = "users"
 
-    username = db.Column(db.Text(20), primary_key=True, 
+    username = db.Column(db.String(length=20), primary_key=True, 
                          unique=True, nullable=False)
-    password = db.Column(db.Text, nullable=False)
-    email = db.Column(db.Text(50), unique=True, 
+    password = db.Column(db.String, nullable=False)
+    email = db.Column(db.String(length=50), unique=True, 
                       nullable=False)
-    first_name = db.Column(db.Text(30), nullable=False)
-    last_name = db.Column(db.Text(30), nullable=False)
+    first_name = db.Column(db.String(length=30), nullable=False)
+    last_name = db.Column(db.String(length=30), nullable=False)
 
     def __repr__(self):
         u = self

@@ -70,7 +70,7 @@ def logout():
 @app.route('/users/<username>', methods=['GET'])
 def user_page(username):
     if 'username' not in session:
-        flash('You must be logged in to view!')
+        flash('You must log in to view an account!')
         return redirect('/login')
     else:
         if session['username'] == username:
@@ -99,8 +99,8 @@ def delete_user(username):
             flash(f"You do not have access to this page!")
             return redirect(f'/users/{user.username}')
 
-@app.route('/users/<username>/post/add')
-def add_post(username):
+@app.route('/users/<username>/post/add', methods=['GET'])
+def post_form(username):
     form = PostForm()
     if 'username' not in session:
         flash('You must log in to edit an account!')
@@ -114,5 +114,29 @@ def add_post(username):
             flash(f"You do not have access to this page!")
             return redirect(f'/users/{user.username}')
 
-# @app.route('/post/<int:id>/update')
-# def update_post(id):
+@app.route('/users/<username>/post/add', methods=['POST'])
+def submit_post(username):
+    form = PostForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        content = form.content.data
+
+        post = Post(title=title, content=content, username=username)
+        try:
+            db.session.add(post)
+            db.session.commit()
+            return redirect (f'/users/{username}')
+        except:
+            db.session.rollback()
+            flash(f"Error occurred, please try again!")
+            return redirect (f'/users/{username}')
+
+@app.route('/post/<int:id>/update')
+def update_post(id):
+    post = Post.query.get_or_404(id)
+    if session['username'] == post.username:
+        return render_template('update_post.html', post=post)
+    else:
+        user = User.query.get_or_404(session['username'])
+        flash(f"You do not have access to this page!")
+        return redirect (f'/users/{user}')

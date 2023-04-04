@@ -8,8 +8,12 @@ nav a {
 }
 
 .card {
-    margin: 2rem;
+    margin: 1rem;
     width: 18rem;
     text-align: center;
-    display: inline-block;
+}
+
+.cards {
+    display: inline-flex;
+    flex-wrap: wrap;
 }

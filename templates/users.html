@@ -10,14 +10,16 @@
 {% endblock %}
 
 {% block content %}
+<div class="cards">
     {% for post in posts %}
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">{{post.title}}</h4>
                 <p class="card-text">{{post.content}}</p>
-                <a href='post/{{post.id}}/update' class="card-link">Edit</a>
-                <a href='post/{{post.id}}/delete' class="card-link">Delete</a>
+                <a href='/post/{{post.id}}/update' class="card-link">Edit</a>
+                <a href='/post/{{post.id}}/delete' class="card-link">Delete</a>
             </div>
         </div>
     {% endfor %}
+</div>
 {% endblock %}

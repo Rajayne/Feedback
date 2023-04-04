@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Post Form{% endblock %}
+
+{% block header %}Update {{post.user.username}}'s Post{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form method="POST">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input class="form-control" id="title" name="title" placeholder="{{post.title}}">
+            <label for="content">Content</label>
+            <input class="form-control" id="content" name="content" placeholder="{{post.content}}">
+        </div>
+        <a href="/users/{{post.user.username}}" class="btn btn-secondary">Back</a>
+        <button class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}

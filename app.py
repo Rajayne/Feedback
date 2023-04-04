@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Post
-from forms import RegisterForm, LoginForm
+from forms import RegisterForm, LoginForm, PostForm
 from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__,template_folder='templates')
@@ -61,6 +61,12 @@ def login():
 
     return render_template('login.html', form=form)
 
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    session.pop('username')
+    flash('Goodbye!')
+    return redirect('/login')
+
 @app.route('/users/<username>', methods=['GET'])
 def user_page(username):
     if 'username' not in session:
@@ -93,8 +99,20 @@ def delete_user(username):
             flash(f"You do not have access to this page!")
             return redirect(f'/users/{user.username}')
 
-@app.route('/logout', methods=['GET', 'POST'])
-def logout():
-    session.pop('username')
-    flash('Goodbye!')
-    return redirect('/login')
+@app.route('/users/<username>/post/add')
+def add_post(username):
+    form = PostForm()
+    if 'username' not in session:
+        flash('You must log in to edit an account!')
+        return redirect('/login')
+    else:
+        if session['username'] == username:
+            user = User.query.get_or_404(username)
+            return render_template('post.html', user=user, form=form)
+        else:
+            user = User.query.get_or_404(session['username'])
+            flash(f"You do not have access to this page!")
+            return redirect(f'/users/{user.username}')
+
+# @app.route('/post/<int:id>/update')
+# def update_post(id):

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Post Form{% endblock %}
+
+{% block header %}Create New Post{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {% for field in form
+            if field.widget.input_type != 'hidden' %}
+        <div class="form-group">
+            {{field.label}} 
+            {{field(class_="form-control")}}
+        
+            {% for err in field.errors %}
+            <small class="form-text text-danger">
+                {{err}}
+            </small>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        <a href="/login" class="btn btn-secondary">Login</a>
+        <button class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}

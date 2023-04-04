@@ -1,12 +1,8 @@
-{% extends 'base.html' %}
-
-{% block title %}Register Form{% endblock %}
+{% block title %}Login Form{% endblock %}
 
 {{% block navbar %}}{{% endblock %}}
 
-{% block header %}Register User{{user.name}}{% endblock %}
-
-{% block content %}
+{% block header %}Login{% endblock %}
 <form method="POST">
     {{ form.hidden_tag() }}
     {% for field in form
@@ -22,7 +18,7 @@
         {% endfor %}
     </div>
     {% endfor %}
-    <a href="/" class="btn btn-secondary">Back</a>
-    <button class="btn btn-primary">Submit</button>
+    <a href="/" class="back-button">Back</a>
+    <button class="add-button">Submit</button>
 </form>
-{% endblock %}
+{% block content %}
